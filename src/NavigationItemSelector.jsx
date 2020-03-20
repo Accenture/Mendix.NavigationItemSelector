@@ -4,6 +4,7 @@ import { hot } from "react-hot-loader/root";
 class NavigationItemSelector extends Component {
     constructor(props) {
         super(props);
+        this.state = { isOn: true };
     }
 
     findItem = (menu, itemName) => {
@@ -13,7 +14,6 @@ class NavigationItemSelector extends Component {
         Array.from(items).forEach(it => {
             if (it.innerText === itemName) {
                 item = it;
-                return;
             }
         });
         return item.getElementsByTagName("a")[0];
@@ -29,19 +29,23 @@ class NavigationItemSelector extends Component {
 
     componentDidMount() {
         this.interval = setInterval(() => {
-            if (this.props.navigationItem.status == "available" && this.props.menuName.status == "available") {
+            if (this.props.navigationItem.status === "available" && this.props.menuName.status === "available") {
                 var menu = document.querySelector(".mx-name-" + this.props.menuName.value);
-                var item = this.findItem(menu, this.props.navigationItem.value);
-                if (item != null) {
-                    if (item.classList.contains("active") == true) {
-                        clearInterval(this.interval);
-                    } else {
-                        this.activateItem(menu, item);
-                        item.focus();
+                try {
+                    var item = this.findItem(menu, this.props.navigationItem.value);
+                    if (item != null) {
+                        if (item.classList.contains("active") === true) {
+                            clearInterval(this.interval);
+                        } else {
+                            this.activateItem(menu, item);
+                            item.focus();
+                        }
                     }
+                } catch (error) {
+                    //could not find element - try again
                 }
             }
-        }, 500);
+        }, 300);
     }
 
     render() {
