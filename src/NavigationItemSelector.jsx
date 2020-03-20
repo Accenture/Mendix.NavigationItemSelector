@@ -36,10 +36,8 @@ class NavigationItemSelector extends Component {
                     if (item.classList.contains("active") == true) {
                         clearInterval(this.interval);
                     } else {
-                        console.log(item);
                         this.activateItem(menu, item);
                         item.focus();
-                        console.log(item);
                     }
                 }
             }
