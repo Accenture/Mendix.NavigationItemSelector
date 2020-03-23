@@ -4,7 +4,18 @@ import { hot } from "react-hot-loader/root";
 class NavigationItemSelector extends Component {
     constructor(props) {
         super(props);
-        this.state = { isOn: true };
+        this.state = { menu: null };
+        this.observer = new window.MutationObserver(this.callback.bind(this));
+    }
+
+    callback() {
+        this.observer.disconnect();
+        setTimeout(this.changeMenu.bind(this), 50);
+    }
+
+    changeMenu() {
+        var item = this.findItem(this.state.menu, this.props.navigationItem.value);
+        this.activateItem(this.state.menu, item);
     }
 
     findItem = (menu, itemName) => {
@@ -30,22 +41,17 @@ class NavigationItemSelector extends Component {
     componentDidMount() {
         this.interval = setInterval(() => {
             if (this.props.navigationItem.status === "available" && this.props.menuName.status === "available") {
-                var menu = document.querySelector(".mx-name-" + this.props.menuName.value);
-                try {
-                    var item = this.findItem(menu, this.props.navigationItem.value);
-                    if (item != null) {
-                        if (item.classList.contains("active") === true) {
-                            clearInterval(this.interval);
-                        } else {
-                            this.activateItem(menu, item);
-                            item.focus();
-                        }
-                    }
-                } catch (error) {
-                    //could not find element - try again
-                }
+                var _menu = document.querySelector(".mx-name-" + this.props.menuName.value);
+                var item = this.findItem(_menu, this.props.navigationItem.value);
+                this.activateItem(_menu, item);
+                this.setState({ menu: _menu });
+                this.observer.observe(_menu, { attributes: true, childList: true, subtree: true });
+                clearInterval(this.interval);
             }
-        }, 300);
+        }, 50);
+    }
+    componentWillUnmount() {
+        this.observer.disconnect();
     }
 
     render() {
