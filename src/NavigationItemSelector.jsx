@@ -10,7 +10,7 @@ class NavigationItemSelector extends Component {
 
     callback() {
         this.observer.disconnect();
-        setTimeout(this.changeMenu.bind(this), 50);
+        setTimeout(this.changeMenu.bind(this), 20);
     }
 
     changeMenu() {
@@ -42,11 +42,15 @@ class NavigationItemSelector extends Component {
         this.interval = setInterval(() => {
             if (this.props.navigationItem.status === "available" && this.props.menuName.status === "available") {
                 var _menu = document.querySelector(".mx-name-" + this.props.menuName.value);
-                var item = this.findItem(_menu, this.props.navigationItem.value);
-                this.activateItem(_menu, item);
-                this.setState({ menu: _menu });
-                this.observer.observe(_menu, { attributes: true, childList: true, subtree: true });
-                clearInterval(this.interval);
+                if (_menu !== undefined) {
+                    var item = this.findItem(_menu, this.props.navigationItem.value);
+                    if (item !== undefined) {
+                        this.activateItem(_menu, item);
+                        this.setState({ menu: _menu });
+                        this.observer.observe(_menu, { attributes: true, childList: true, subtree: true });
+                        clearInterval(this.interval);
+                    }
+                }
             }
         }, 50);
     }
