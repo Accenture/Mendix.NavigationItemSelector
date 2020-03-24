@@ -27,6 +27,9 @@ class NavigationItemSelector extends Component {
                 item = it;
             }
         });
+        if (item === undefined) {
+            return undefined;
+        }
         return item.getElementsByTagName("a")[0];
     };
 
