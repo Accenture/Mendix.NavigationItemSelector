@@ -13,10 +13,9 @@
                 <description>Menu widget name in modeler e.g. "menuBar1"</description>
                 <returnType type="String" />
             </property>
-            <property key="navigationItem" type="expression" required="true">
-                <caption>Menu item name</caption>
-                <description>Menu item name e.g. "Home"</description>
-                <returnType type="String" />
+            <property key="activeClass" type="string" required="true" defaultValue="color: #512d64; border-left-color: #512d64; background-color: #ffffff;">
+                <caption>Active item class</caption>
+                <description>Insert styles for selected menu item or leave default configuration.</description>
             </property>
         </propertyGroup>
     </properties>
