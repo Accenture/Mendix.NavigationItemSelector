@@ -1,5 +1,6 @@
 import { Component, createElement } from "react";
 import { hot } from "react-hot-loader/root";
+import "./ui/NavigationItemSelector.css";
 
 class NavigationItemSelector extends Component {
     constructor(props) {
@@ -7,15 +8,6 @@ class NavigationItemSelector extends Component {
         this.state = { menu: null };
         this.observer = new window.MutationObserver(this.callback.bind(this));
         this.onMenuTrigger = this.onMenuTrigger.bind(this);
-        this.createClass(".region-sidebar .mx-navigationtree .navbar-inner > ul > li a.menu-active", props.activeClass);
-    }
-
-    createClass(name, rules) {
-        var style = document.createElement("style");
-        style.type = "text/css";
-        document.getElementsByTagName("head")[0].appendChild(style);
-        if (!(style.sheet || {}).insertRule) (style.styleSheet || style.sheet).addRule(name, rules);
-        else style.sheet.insertRule(name + "{" + rules + "}", 0);
     }
 
     callback() {
@@ -32,11 +24,8 @@ class NavigationItemSelector extends Component {
 
     changeMenu() {
         this.observer.disconnect();
-        Array.from(this.state.menu.getElementsByTagName("li")).forEach(element => {
-            var a = element.getElementsByTagName("a")[0];
-            if (a !== undefined) {
-                a.classList.remove("active");
-            }
+        Array.from(this.state.menu.querySelectorAll(".active")).forEach(element => {
+            if (element !== undefined) element.classList.remove("active");
         });
         this.observer.observe(this.state.menu, { attributes: true, childList: true, subtree: true });
     }
@@ -58,11 +47,10 @@ class NavigationItemSelector extends Component {
 
     activateItem = (menu, item) => {
         if (item !== undefined) {
-            Array.from(menu.getElementsByTagName("li")).forEach(element => {
-                var a = element.getElementsByTagName("a")[0];
-                if (a !== undefined) {
-                    a.classList.remove("active");
-                    a.classList.remove("menu-active");
+            Array.from(menu.querySelectorAll("li a.active, li a.menu-active")).forEach(element => {
+                if (element !== undefined) {
+                    element.classList.remove("active");
+                    element.classList.remove("menu-active");
                 }
             });
             item.classList.add("menu-active");
@@ -85,10 +73,6 @@ class NavigationItemSelector extends Component {
     componentWillUnmount() {
         removeEventListener("menuTrigger", this.onMenuTrigger);
         this.observer.disconnect();
-    }
-
-    render() {
-        return <div style={{ display: "none" }}></div>;
     }
 }
 
