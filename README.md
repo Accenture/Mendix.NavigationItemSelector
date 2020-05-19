@@ -11,8 +11,17 @@ Place the widget on your laybout, containing navigation menu widget.
 
 On every page that can be accessed through navigation of your app insert jaascript code:
 $(document).ready(function(){
-    var event  = new CustomEvent('menuTrigger', {detail: "<YOUR NAVIGATION ITEM CAPTION>"});
+    var event  = new CustomEvent('menuTrigger', {detail: "YOUR_NAVIGATION_ITEM_CAPTION"});
     document.dispatchEvent(event);
 });
   
-I recommend using widget Javascript Snippet from appstore: https://appstore.home.mendix.com/link/app/43096 using jQuerry without refreshing.
+I recommend using widget Javascript Snippet from appstore using jQuerry without refreshing.
+
+## Styling
+This widget overrides native menu behaviour and styling. In order for it to work, I suggest copying a styling for class 'active' and pasting it for class 'menu-active'.
+
+## Known issues
+-Currently works for Sidebar Menu (does not work for topbar menu)
+
+## Coming soon
+Next releases will contain another item in package that will help passing menu captions to navigation item selector!
