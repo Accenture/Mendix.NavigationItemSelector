@@ -1,8 +1,4 @@
 .region-sidebar .mx-navigationtree .navbar-inner > ul > li a.menu-active,
 .region-sidebar .mx-navigationtree .navbar-inner > ul > li a.menu-active:hover,
 .region-sidebar .mx-navigationtree .navbar-inner > ul > li a.menu-active:focus {
-    color: #fff;
-    text-shadow: none;
-    background: #3498db;
-    border-radius: 3px;
 }

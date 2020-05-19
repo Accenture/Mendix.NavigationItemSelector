@@ -15,11 +15,16 @@ class NavigationItemSelector extends Component {
     }
 
     onMenuTrigger = event => {
-        var item = event.detail === undefined ? null : this.findItem(this.state.menu, event.detail);
-        if (item !== null) {
-            this.activateItem(this.state.menu, item);
-            this.observer.observe(this.state.menu, { attributes: true, childList: true, subtree: true });
-        }
+        this.interval = setInterval(() => {
+            if (this.state.menu !== null) {
+                var item = event.detail === undefined ? null : this.findItem(this.state.menu, event.detail);
+                if (item !== null) {
+                    this.activateItem(this.state.menu, item);
+                    this.observer.observe(this.state.menu, { attributes: true, childList: true, subtree: true });
+                    clearInterval(this.interval);
+                }
+            }
+        }, 10);
     };
 
     changeMenu() {
@@ -73,6 +78,10 @@ class NavigationItemSelector extends Component {
     componentWillUnmount() {
         removeEventListener("menuTrigger", this.onMenuTrigger);
         this.observer.disconnect();
+    }
+
+    render() {
+        return <div style={{ display: "none" }} />;
     }
 }
 
