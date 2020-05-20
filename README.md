@@ -5,7 +5,7 @@ Mendix plugable widget that marks navigation item as active based on menu name a
 This widget was created to help handling with navigating to a page in other way that through navigation menu e.g. button, deep link etc.
 
 ## Usage
-Place the widget on your laybout, containing navigation menu widget. 
+Place the widget on your layout, containing navigation menu widget. 
 -Insert the name of menu component e.g. "navigationTree3", "menuBar1"
 -Insert your styles for selected item or leave default configuration.
 
