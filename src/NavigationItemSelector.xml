@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget id="objectivity.navigationitemselector.NavigationItemSelector" needsEntityContext="false" offlineCapable="true" pluginWidget="true" supportedPlatform="Web" 
-    xmlns="http://www.mendix.com/widget/1.0/" 
+<widget id="objectivity.navigationitemselector.NavigationItemSelector" needsEntityContext="false" offlineCapable="true" pluginWidget="true" supportedPlatform="Web"
+    xmlns="http://www.mendix.com/widget/1.0/"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
     <name>Navigation Item Selector</name>
     <description>Widget will select a navigation tree item based on provided string (html classname)</description>
@@ -12,6 +12,19 @@
                 <caption>Menu widget name</caption>
                 <description>Menu widget name in modeler e.g. "menuBar1"</description>
                 <returnType type="String" />
+            </property>
+            <property key="itemCaption" type="expression" required="true">
+                <caption>Menu item caption</caption>
+                <description>Menu item caption e.g. "Home"</description>
+                <returnType type="String" />
+            </property>
+            <property key="menuType" type="enumeration" defaultValue="navtree">
+                <caption>Menu type</caption>
+                <description>Usually navigation tree for "Default" and menu bar for "Topbar"</description>
+                <enumerationValues>
+                    <enumerationValue key="navtree">navigation tree</enumerationValue>
+                    <enumerationValue key="menubar">menu bar</enumerationValue>
+                </enumerationValues>
             </property>
         </propertyGroup>
     </properties>

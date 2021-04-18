@@ -1,83 +1,53 @@
 import { Component, createElement } from "react";
 import { hot } from "react-hot-loader/root";
-import "./ui/NavigationItemSelector.css";
 
 class NavigationItemSelector extends Component {
-    constructor(props) {
-        super(props);
-        this.state = { menu: null };
-        this.observer = new window.MutationObserver(this.callback.bind(this));
-        this.onMenuTrigger = this.onMenuTrigger.bind(this);
+    getWidget(widgetName) {
+        let widget;
+        try {
+            widget = window.dijit.byNode(document.querySelector(".mx-name-" + widgetName));
+        } catch (error) {
+            console.log(error.message);
+        }
+        return widget;
     }
 
-    callback() {
-        setTimeout(this.changeMenu.bind(this), 20);
-    }
-
-    onMenuTrigger = event => {
-        this.interval = setInterval(() => {
-            if (this.state.menu !== null) {
-                var item = event.detail === undefined ? null : this.findItem(this.state.menu, event.detail);
-                if (item !== null) {
-                    this.activateItem(this.state.menu, item);
-                    this.observer.observe(this.state.menu, { attributes: true, childList: true, subtree: true });
-                    clearInterval(this.interval);
-                }
-            }
-        }, 10);
-    };
-
-    changeMenu() {
-        this.observer.disconnect();
-        Array.from(this.state.menu.querySelectorAll(".active")).forEach(element => {
-            if (element !== undefined) element.classList.remove("active");
-        });
-        this.observer.observe(this.state.menu, { attributes: true, childList: true, subtree: true });
-    }
-
-    findItem = (menu, itemName) => {
-        if (menu == null) return null;
-        var items = menu.getElementsByTagName("li");
-        var item;
-        Array.from(items).forEach(it => {
-            if (it.innerText === itemName) {
-                item = it;
+    findItem(widget, caption) {
+        const items = widget._menuItemMap;
+        let item;
+        Object.keys(items).forEach(key => {
+            if (items[key].caption === caption) {
+                item = items[key].id;
             }
         });
-        if (item === undefined) {
-            return undefined;
-        }
-        return item.getElementsByTagName("a")[0];
-    };
+        return item;
+    }
 
-    activateItem = (menu, item) => {
-        if (item !== undefined) {
-            Array.from(menu.querySelectorAll("li a.active, li a.menu-active")).forEach(element => {
-                if (element !== undefined) {
-                    element.classList.remove("active");
-                    element.classList.remove("menu-active");
-                }
-            });
-            item.classList.add("menu-active");
+    activateItem(widget, itemId) {
+        widget._currentActive = itemId;
+        widget._initialActive = widget._currentActive;
+        if (widget._currentActive) {
+            if (this.props.menuType === "navtree") {
+                widget._view.deactivateAll();
+                widget._view.activate(widget._currentActive);
+            } else if (this.props.menuType === "menubar") {
+                widget._view.deselectAll();
+                widget._view.select(widget._currentActive);
+            }
         }
-    };
+    }
 
     componentDidMount() {
         this.interval = setInterval(() => {
-            if (this.props.menuName.status === "available") {
-                var _menu = document.querySelector(".mx-name-" + this.props.menuName.value);
-                if (_menu !== undefined) {
-                    this.setState({ menu: _menu });
-                    document.addEventListener("menuTrigger", this.onMenuTrigger);
+            if (this.props.menuName.status === "available" && this.props.itemCaption.status === "available") {
+                const widget = this.getWidget(this.props.menuName.value);
+                if (widget && widget._loaded) {
+                    const itemId = this.findItem(widget, this.props.itemCaption.value);
+                    this.activateItem(widget, itemId);
                     clearInterval(this.interval);
                 }
             }
         }, 50);
-    }
-
-    componentWillUnmount() {
-        removeEventListener("menuTrigger", this.onMenuTrigger);
-        this.observer.disconnect();
     }
 
     render() {
