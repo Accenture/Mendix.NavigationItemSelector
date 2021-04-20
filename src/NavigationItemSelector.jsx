@@ -28,14 +28,12 @@ class NavigationItemSelector extends Component {
         widget._currentSelection = itemId;
         widget._initialActive = widget._currentActive;
         widget._initialSelection = widget._currentSelection;
-        if (widget._currentActive) {
-            if (this.props.menuType === "navtree") {
-                widget._view.deactivateAll();
-                widget._view.activate(widget._currentActive);
-            } else if (this.props.menuType === "menubar") {
-                widget._view.deselectAll();
-                widget._view.select(widget._currentActive);
-            }
+        if (widget._currentActive && this.props.menuType === "navtree") {
+            widget._view.deactivateAll();
+            widget._view.activate(widget._currentActive);
+        } else if (widget._currentActive && this.props.menuType === "menubar") {
+            widget._view.deselectAll();
+            widget._view.select(widget._currentActive);
         }
     }
 
