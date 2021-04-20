@@ -25,7 +25,9 @@ class NavigationItemSelector extends Component {
 
     activateItem(widget, itemId) {
         widget._currentActive = itemId;
+        widget._currentSelection = itemId;
         widget._initialActive = widget._currentActive;
+        widget._initialSelection = widget._currentSelection;
         if (widget._currentActive) {
             if (this.props.menuType === "navtree") {
                 widget._view.deactivateAll();
