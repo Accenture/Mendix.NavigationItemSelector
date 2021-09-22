@@ -1,7 +1,7 @@
 {
     "name": "navigationitemselector",
     "widgetName": "NavigationItemSelector",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "Widget will select a navigation tree item based on provided string (html classname)",
     "copyright": "Objectivity 2020",
     "author": "Kacper Kozimor",
